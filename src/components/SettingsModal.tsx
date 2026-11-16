@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { X, FolderSync, Plus, LockOpen, Check } from 'lucide-react';
+import { X, SlidersHorizontal, Plus, LockOpen, Check } from 'lucide-react';
 import { CategoryItem, DocumentType, TechnicalDocument } from '../types/documents';
 
 interface SettingsModalProps {
   isOpen: boolean;
-  initialTab: 'drive' | 'add';
+  initialTab: 'prefs' | 'add';
   onClose: () => void;
-  rootFolderName: string;
-  driveAccount: string;
   userName: string;
-  onUpdateWorkspace: (patch: { rootFolderName: string; driveAccount: string; userName: string }) => void;
+  onUpdateWorkspace: (patch: { userName: string }) => void;
   categories: CategoryItem[];
   onAddDocument: (doc: TechnicalDocument) => void;
 }
@@ -18,16 +16,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   isOpen,
   initialTab,
   onClose,
-  rootFolderName,
-  driveAccount,
   userName,
   onUpdateWorkspace,
   categories,
   onAddDocument,
 }) => {
-  const [tab, setTab] = useState<'drive' | 'add'>(initialTab);
-  const [folderInput, setFolderInput] = useState(rootFolderName);
-  const [accountInput, setAccountInput] = useState(driveAccount);
+  const [tab, setTab] = useState<'prefs' | 'add'>(initialTab);
   const [userInput, setUserInput] = useState(userName);
   const [savedNotice, setSavedNotice] = useState(false);
 
@@ -52,8 +46,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateWorkspace({
-      rootFolderName: folderInput.trim() || 'CONSULTA TÉCNICA',
-      driveAccount: accountInput.trim() || 'usuario@empresa.com',
       userName: userInput.trim() || 'Fernando Franco',
     });
     setSavedNotice(true);
@@ -123,7 +115,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         .filter(Boolean),
       fileSize: '2,4 MB',
       pages: type === 'Imagem' ? undefined : 6,
-      drivePath: `${rootFolderName} / ${selectedCat.label} / ${finalCode}`,
+      drivePath: `CONSULTA TÉCNICA / ${selectedCat.label} / ${finalCode}`,
       thumbnailKind,
       imageUrl: uploadedPreviewUrl,
       summary:
@@ -163,15 +155,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="flex items-center gap-2.5">
             <button
               type="button"
-              onClick={() => setTab('drive')}
+              onClick={() => setTab('prefs')}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                tab === 'drive'
+                tab === 'prefs'
                   ? 'bg-blue-600 text-white'
                   : 'text-slate-300 hover:bg-slate-800'
               }`}
             >
-              <FolderSync className="h-3.5 w-3.5" />
-              <span>Configurações & Drive</span>
+              <SlidersHorizontal className="h-3.5 w-3.5" />
+              <span>Preferências</span>
             </button>
             <button
               type="button"
@@ -196,7 +188,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </button>
         </div>
 
-        {tab === 'drive' ? (
+        {tab === 'prefs' ? (
           <form onSubmit={handleSaveSettings} className="space-y-4 p-5 text-sm">
             <div className="flex items-start gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs text-emerald-200">
               <LockOpen className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
@@ -209,30 +201,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   liberados para consulta direta na rede sem bloqueio de login.
                 </p>
               </div>
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-300">
-                Pasta raiz sincronizada (Google Drive)
-              </label>
-              <input
-                type="text"
-                value={folderInput}
-                onChange={(e) => setFolderInput(e.target.value)}
-                className="h-10 w-full rounded-lg border border-slate-700 bg-[#081221] px-3 text-sm text-white focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-slate-300">
-                Conta corporativa vinculada
-              </label>
-              <input
-                type="email"
-                value={accountInput}
-                onChange={(e) => setAccountInput(e.target.value)}
-                className="h-10 w-full rounded-lg border border-slate-700 bg-[#081221] px-3 text-sm text-white focus:border-blue-500 focus:outline-none"
-              />
             </div>
 
             <div>

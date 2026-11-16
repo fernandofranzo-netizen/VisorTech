@@ -2,12 +2,10 @@ import React from 'react';
 import {
   Search,
   RotateCcw,
-  Info,
   ChevronRight,
   ChevronDown,
   Folder,
   ArrowRight,
-  RefreshCw,
 } from 'lucide-react';
 import {
   AdvancedSearchFilters,
@@ -28,12 +26,6 @@ interface RightSidebarProps {
   revisions: string[];
   onSelectCategory: (categoryId: string) => void;
   onViewAllCategories: () => void;
-  rootFolderName: string;
-  driveAccount: string;
-  lastSyncTime: string;
-  isSyncing: boolean;
-  onSyncNow: () => void;
-  onOpenDriveDetails: () => void;
 }
 
 export const RightSidebar: React.FC<RightSidebarProps> = ({
@@ -47,12 +39,6 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
   revisions,
   onSelectCategory,
   onViewAllCategories,
-  rootFolderName,
-  driveAccount,
-  lastSyncTime,
-  isSyncing,
-  onSyncNow,
-  onOpenDriveDetails,
 }) => {
   const topCategories = TOP_ACCESSED_CATEGORY_IDS.map((id) =>
     categories.find((c) => c.id === id)
@@ -67,98 +53,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
 
   return (
     <aside className="flex w-full xl:w-[320px] shrink-0 flex-col gap-4 border-l border-slate-800/80 bg-[#081221] p-4">
-      {/* 1. Google Drive Status Card */}
-      <section className="rounded-xl border border-slate-800/90 bg-[#0c192c] p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-3">
-            {/* Google Drive Triangle SVG */}
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#081322] border border-slate-800">
-              <svg viewBox="0 0 87.3 78" className="h-6 w-6" aria-hidden="true">
-                <path
-                  d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z"
-                  fill="#0066da"
-                />
-                <path
-                  d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0-1.2 4.5h27.5z"
-                  fill="#00ac47"
-                />
-                <path
-                  d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z"
-                  fill="#ea4335"
-                />
-                <path
-                  d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z"
-                  fill="#00832d"
-                />
-                <path
-                  d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z"
-                  fill="#2684fc"
-                />
-                <path
-                  d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z"
-                  fill="#ffba00"
-                />
-              </svg>
-            </div>
-            <div>
-              <h2 className="font-display text-sm font-bold text-white">Google Drive</h2>
-              <div className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-emerald-400">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                <span>Conectado</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={onSyncNow}
-              title={`Sincronizar agora (última: ${lastSyncTime})`}
-              aria-label="Sincronizar pasta do Google Drive"
-              className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
-            >
-              <RefreshCw className={`h-3.5 w-3.5 ${isSyncing ? 'animate-spin text-blue-400' : ''}`} />
-            </button>
-            <button
-              type="button"
-              onClick={onOpenDriveDetails}
-              title="Detalhes da pasta raiz"
-              aria-label="Informações da integração Google Drive"
-              className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
-            >
-              <Info className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        <div className="mt-3.5 space-y-1 text-xs">
-          <div className="flex items-center justify-between text-slate-400">
-            <span>
-              Pasta raiz:{' '}
-              <strong className="font-semibold text-slate-100">{rootFolderName}</strong>
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={onOpenDriveDetails}
-            className="flex w-full items-center gap-1.5 text-left text-slate-400 transition-colors hover:text-slate-200"
-          >
-            <span>Conta:</span>
-            <ChevronRight className="h-3 w-3 text-slate-500" />
-            <span className="truncate font-medium text-slate-200">{driveAccount}</span>
-          </button>
-        </div>
-
-        <div className="mt-3.5 flex items-start gap-2.5 rounded-lg border border-slate-700/70 bg-[#091526] p-3 text-[11.5px] leading-relaxed text-slate-300">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-          <p>
-            Os arquivos permanecem no Google Drive. Alterações são refletidas automaticamente no
-            aplicativo.
-          </p>
-        </div>
-      </section>
-
-      {/* 2. Advanced Search Card */}
+      {/* Advanced Search Card */}
       <section className="rounded-xl border border-slate-800/90 bg-[#0c192c] p-4">
         <h2 className="font-display text-[15px] font-bold text-white">Pesquisa avançada</h2>
 

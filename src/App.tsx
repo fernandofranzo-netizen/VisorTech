@@ -93,15 +93,11 @@ export default function App() {
       return saved
         ? JSON.parse(saved)
         : {
-            rootFolderName: 'CONSULTA TÉCNICA',
-            driveAccount: 'usuario@empresa.com',
             userName: 'Fernando Franco',
             userRole: 'Usuário',
           };
     } catch {
       return {
-        rootFolderName: 'CONSULTA TÉCNICA',
-        driveAccount: 'usuario@empresa.com',
         userName: 'Fernando Franco',
         userRole: 'Usuário',
       };
@@ -147,10 +143,8 @@ export default function App() {
   const [viewLayout, setViewLayout] = useState<'grid' | 'list'>('grid');
   const [selectedDoc, setSelectedDoc] = useState<TechnicalDocument | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settingsTab, setSettingsTab] = useState<'drive' | 'add'>('drive');
+  const [settingsTab, setSettingsTab] = useState<'prefs' | 'add'>('prefs');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
-  const [lastSyncTime, setLastSyncTime] = useState('Agora mesmo');
 
   // Dynamic dropdown options from catalog
   const equipments = useMemo(
@@ -337,16 +331,6 @@ export default function App() {
     }
   };
 
-  const handleSyncNow = () => {
-    setIsSyncing(true);
-    setTimeout(() => {
-      setIsSyncing(false);
-      const now = new Date();
-      const pad = (n: number) => String(n).padStart(2, '0');
-      setLastSyncTime(`${pad(now.getHours())}:${pad(now.getMinutes())}`);
-    }, 700);
-  };
-
   const handleExportCsv = () => {
     const headers = ['Código', 'Título', 'Tipo', 'Categoria', 'Equipamento', 'Fabricante', 'Revisão', 'Atualizado'];
     const rows = filteredDocuments.map((d) =>
@@ -440,7 +424,7 @@ export default function App() {
           setActiveView(sec);
         }}
         onOpenSettings={() => {
-          setSettingsTab('drive');
+          setSettingsTab('prefs');
           setSettingsOpen(true);
         }}
         onOpenAddDoc={() => {
@@ -486,12 +470,6 @@ export default function App() {
               isHomeActive={activeView === 'home'}
               onSelectHome={handleSelectHome}
               onSelectCategory={handleSelectCategory}
-              rootFolderName={workspacePrefs.rootFolderName}
-              onOpenDriveInfo={() => {
-                setMobileMenuOpen(false);
-                setSettingsTab('drive');
-                setSettingsOpen(true);
-              }}
             />
             <button
               type="button"
@@ -514,11 +492,6 @@ export default function App() {
             isHomeActive={activeView === 'home'}
             onSelectHome={handleSelectHome}
             onSelectCategory={handleSelectCategory}
-            rootFolderName={workspacePrefs.rootFolderName}
-            onOpenDriveInfo={() => {
-              setSettingsTab('drive');
-              setSettingsOpen(true);
-            }}
           />
         </div>
 
@@ -916,15 +889,6 @@ export default function App() {
             setSelectedCategoryId(null);
             setActiveView('categories');
           }}
-          rootFolderName={workspacePrefs.rootFolderName}
-          driveAccount={workspacePrefs.driveAccount}
-          lastSyncTime={lastSyncTime}
-          isSyncing={isSyncing}
-          onSyncNow={handleSyncNow}
-          onOpenDriveDetails={() => {
-            setSettingsTab('drive');
-            setSettingsOpen(true);
-          }}
         />
       </div>
 
@@ -946,8 +910,6 @@ export default function App() {
         isOpen={settingsOpen}
         initialTab={settingsTab}
         onClose={() => setSettingsOpen(false)}
-        rootFolderName={workspacePrefs.rootFolderName}
-        driveAccount={workspacePrefs.driveAccount}
         userName={workspacePrefs.userName}
         onUpdateWorkspace={(patch) =>
           setWorkspacePrefs((prev: typeof workspacePrefs) => ({ ...prev, ...patch }))

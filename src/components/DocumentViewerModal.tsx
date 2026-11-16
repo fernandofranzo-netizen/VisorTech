@@ -68,7 +68,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
       `Revisão:      ${doc.revision}`,
       `Atualizado:   ${doc.updatedAt}`,
       `Tamanho:      ${doc.fileSize}`,
-      `Caminho Drive:${doc.drivePath}`,
+      `Caminho:      ${doc.drivePath}`,
       `TAGs:         ${doc.tags.join(', ')}`,
       ``,
       `Resumo Técnico:`,
@@ -305,7 +305,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             <div className="mt-4 rounded-lg border border-slate-800 bg-[#081221] p-3 text-xs">
               <div className="flex items-center gap-1.5 font-medium text-slate-400">
                 <FolderOpen className="h-3.5 w-3.5 text-blue-400" />
-                <span>Caminho sincronizado no Google Drive</span>
+                <span>Localização no acervo técnico</span>
               </div>
               <div className="mt-1 break-all font-mono text-[11px] text-slate-200">
                 {doc.drivePath}

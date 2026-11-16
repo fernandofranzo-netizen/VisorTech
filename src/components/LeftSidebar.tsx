@@ -8,8 +8,6 @@ interface LeftSidebarProps {
   isHomeActive: boolean;
   onSelectHome: () => void;
   onSelectCategory: (categoryId: string) => void;
-  rootFolderName: string;
-  onOpenDriveInfo: () => void;
 }
 
 export const LeftSidebar: React.FC<LeftSidebarProps> = ({
@@ -18,8 +16,6 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
   isHomeActive,
   onSelectHome,
   onSelectCategory,
-  rootFolderName,
-  onOpenDriveInfo,
 }) => {
   const sidebarCategories = categories.filter((c) => c.showInSidebar);
 
@@ -73,21 +69,6 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
           })}
         </nav>
       </div>
-
-      {/* Bottom Drive Connection Footer */}
-      <button
-        type="button"
-        onClick={onOpenDriveInfo}
-        className="border-t border-slate-800/80 bg-[#07101d] px-4 py-3.5 text-left transition-colors hover:bg-slate-900/60"
-      >
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-200">
-          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-400" />
-          <span>Conectado ao Google Drive</span>
-        </div>
-        <div className="mt-1 pl-4.5 text-[11px] text-slate-400">
-          Pasta raiz: <span className="font-semibold text-slate-200">{rootFolderName}</span>
-        </div>
-      </button>
     </aside>
   );
 };
