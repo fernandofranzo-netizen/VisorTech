@@ -1,0 +1,6 @@
+{
+  "name": "Consulta Técnica — Documentos e Desenhos Industriais",
+  "description": "Portal de pesquisa, organização e visualização de documentos técnicos, desenhos industriais, manuais e fotos de equipamentos por setor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
